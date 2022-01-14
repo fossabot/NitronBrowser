@@ -24,7 +24,7 @@ const CONTENT_BLOCKING_PREFS = [
 const PREF_OPT_OUT_STUDIES_ENABLED = "app.shield.optoutstudies.enabled";
 const PREF_NORMANDY_ENABLED = "app.normandy.enabled";
 
-const PREF_ADDON_RECOMMENDATIONS_ENABLED = "browser.discovery.enabled";
+const PREF_ADDON_RECOMMENDATIONS_ENABLED = "browser.discovery.disabled";
 
 const PREF_PASSWORD_GENERATION_AVAILABLE = "signon.generation.available";
 const { BEHAVIOR_REJECT_TRACKER_AND_PARTITION_FOREIGN } = Ci.nsICookieService;
@@ -59,7 +59,7 @@ XPCOMUtils.defineLazyPreferenceGetter(
   this,
   "gIsFirstPartyIsolated",
   "privacy.firstparty.isolate",
-  false
+  true
 );
 
 XPCOMUtils.defineLazyPreferenceGetter(
@@ -1189,7 +1189,7 @@ var gPrivacyPane = {
       // Hide the "tracking protection in private browsing" list item
       // if the "tracking protection enabled in all windows" list item is showing.
       if (!document.querySelector(selector + " .trackers-option").hidden) {
-        document.querySelector(selector + " .pb-trackers-option").hidden = true;
+        document.querySelector(selector + " .pb-trackers-option").hidden = false;
       }
     }
   },
@@ -1689,7 +1689,7 @@ var gPrivacyPane = {
   showTrackingProtectionExceptions() {
     let params = {
       permissionType: "trackingprotection",
-      hideStatusColumn: true,
+      hideStatusColumn: false,
     };
     gSubDialog.open(
       "chrome://browser/content/preferences/dialogs/permissions.xhtml",
@@ -1963,7 +1963,7 @@ var gPrivacyPane = {
     let infoBoxPrefs = [
       "browser.urlbar.suggest.quicksuggest.nonsponsored",
       "browser.urlbar.suggest.quicksuggest.sponsored",
-      "browser.urlbar.quicksuggest.dataCollection.enabled",
+      "browser.urlbar.quicksuggest.dataCollection.disabled",
     ];
     for (let pref of infoBoxPrefs) {
       Preferences.get(pref).on("change", () =>
@@ -2038,7 +2038,7 @@ var gPrivacyPane = {
       "browser.urlbar.suggest.quicksuggest.sponsored"
     ).value;
     let dataCollection = Preferences.get(
-      "browser.urlbar.quicksuggest.dataCollection.enabled"
+      "browser.urlbar.quicksuggest.dataCollection.disabled"
     ).value;
 
     // Get the l10n ID of the appropriate text based on the values of the three
